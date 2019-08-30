@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+source "$(dirname "$0")/util.sh"
+
+if [[ "${ASDF_INSTALL_TYPE}" != "version" ]]; then
+    echo "NYI: Installing specific ref from source is not currently implemented."
+    exit 1
+fi
+
+download_url=$(queryReleases | grep \"browser_download_url\" | grep -oE "[^\"]*${ASDF_INSTALL_VERSION}/gobuster-$(getPlatform)[^\"]*")
+
+curl -sSL -o "${ASDF_INSTALL_PATH}/temp.7z" ${download_url}
+7z x "${ASDF_INSTALL_PATH}/temp.7z" -o"${ASDF_INSTALL_PATH}"
+rm -f "${ASDF_INSTALL_PATH}/temp.7z"
+
+# Flatten the subdirectory
+subdir=$(find "${ASDF_INSTALL_PATH}" -mindepth 1 -maxdepth 1 -printf "%f\n")
+mv "${ASDF_INSTALL_PATH}/${subdir}"/* "${ASDF_INSTALL_PATH}/${subdir}"/.[!.]* "${ASDF_INSTALL_PATH}" 2> /dev/null || :
+rm -r "${ASDF_INSTALL_PATH}/${subdir}"
