@@ -20,3 +20,5 @@ rm -f "${ASDF_INSTALL_PATH}/temp.7z"
 subdir=$(find "${ASDF_INSTALL_PATH}" -mindepth 1 -maxdepth 1 -printf "%f\n")
 mv "${ASDF_INSTALL_PATH}/${subdir}"/* "${ASDF_INSTALL_PATH}/${subdir}"/.[!.]* "${ASDF_INSTALL_PATH}" 2> /dev/null || :
 rm -r "${ASDF_INSTALL_PATH}/${subdir}"
+
+chmod +x "${ASDF_INSTALL_PATH}/gobuster" # TODO AS: Can we preserve file permissions while extracting?
