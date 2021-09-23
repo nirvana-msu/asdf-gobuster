@@ -10,7 +10,7 @@ if [[ "${ASDF_INSTALL_TYPE}" != "version" ]]; then
     exit 1
 fi
 
-download_url=$(queryReleaseTag | grep \"browser_download_url\".*$(getPlatform) | grep -oE "[^\"]*${ASDF_INSTALL_VERSION}[^\"]*")
+download_url=$(queryReleaseTag | grep \"browser_download_url\".*$(getPlatform) | grep -oE "[^\"]*/download/v${ASDF_INSTALL_VERSION}/[^\"]*")
 
 curl -sSL -o "${ASDF_INSTALL_PATH}/temp.7z" ${download_url}
 7z x "${ASDF_INSTALL_PATH}/temp.7z" -o"${ASDF_INSTALL_PATH}"
