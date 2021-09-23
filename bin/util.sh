@@ -24,8 +24,17 @@ getPlatform() {
     echo "$(getOs)-${arch}"
 }
 
-queryReleases() {
+queryLatestReleases() {
     releases_path=https://api.github.com/repos/OJ/gobuster/releases
+    cmd="curl -sS"
+    if [[ -n "${GITHUB_API_TOKEN}" ]]; then
+        cmd="${cmd} -H 'Authorization: token ${GITHUB_API_TOKEN}'"
+    fi
+    eval "${cmd} ${releases_path}"
+}
+
+queryReleaseTag() {
+    releases_path=https://api.github.com/repos/OJ/gobuster/releases/tags/${ASDF_INSTALL_VERSION}
     cmd="curl -sS"
     if [[ -n "${GITHUB_API_TOKEN}" ]]; then
         cmd="${cmd} -H 'Authorization: token ${GITHUB_API_TOKEN}'"
